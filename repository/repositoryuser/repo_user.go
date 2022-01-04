@@ -25,6 +25,9 @@ func New(db *gorm.DB) RepositoryUser {
 }
 
 func (r *repository) Create(data entity.User) (entity.User, error) {
+	if data.Role != constant.AdminRole && data.Role != constant.MemberRole {
+		return entity.User{}, constant.ErrorInvalidRole
+	}
 	err := r.db.Create(&data).Error
 	if err != nil {
 		return entity.User{}, err

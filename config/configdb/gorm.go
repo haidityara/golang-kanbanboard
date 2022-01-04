@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/arfan21/golang-kanbanboard/entity"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -15,10 +16,10 @@ func New() (*gorm.DB, error) {
 	if err != nil {
 		return nil, err
 	}
-	// err = db.AutoMigrate(entity.User{}, entity.Photo{}, entity.Comment{}, entity.SocialMedia{})
-	// if err != nil {
-	// 	return nil, err
-	// }
+	err = db.AutoMigrate(entity.User{})
+	if err != nil {
+		return nil, err
+	}
 	return db, nil
 }
 
