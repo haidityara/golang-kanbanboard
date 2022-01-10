@@ -28,7 +28,7 @@ type ResponseLogin struct {
 
 // ExampleRequestUpdate only for example swaggo docs
 type ExampleRequestUpdate struct {
-	Username string `json:"username" example:"jhondoe"`
+	Fullname string `json:"full_name" example:"jhondoe"`
 	Email    string `json:"email" example:"test@example.com"`
 }
 
