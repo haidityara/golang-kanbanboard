@@ -41,7 +41,7 @@ func (r *repository) IsCategoryExist(categoryID uint) error {
 
 func (r *repository) Gets() ([]entity.Task, error) {
 	var tasks []entity.Task
-	err := r.db.Preload("User").Preload("Category").Find(tasks).Error
+	err := r.db.Preload("User").Preload("Category").Find(&tasks).Error
 	if err != nil {
 		return []entity.Task{}, err
 	}
