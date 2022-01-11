@@ -28,6 +28,6 @@ type ResponseGet struct {
 	User modeluser.Response `json:"user"`
 }
 
-type ResponseDelete struct {
+type ExampleResponseDelete struct {
 	Message string `json:"message" example:"Task has been deleted"`
 }
