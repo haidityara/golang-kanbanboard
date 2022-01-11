@@ -39,6 +39,15 @@ func (r *repository) IsCategoryExist(categoryID uint) error {
 	return nil
 }
 
+func (r *repository) IsOwner(taskID uint) (entity.Task, error) {
+	task := new(entity.Task)
+	err := r.db.Where("id = ?", taskID).First(&task).Error
+	if err != nil {
+		return entity.Task{}, err
+	}
+	return *task, nil
+}
+
 func (r *repository) Gets() ([]entity.Task, error) {
 	var tasks []entity.Task
 	err := r.db.Preload("User").Preload("Category").Find(&tasks).Error
@@ -49,8 +58,22 @@ func (r *repository) Gets() ([]entity.Task, error) {
 }
 
 func (r *repository) Update(task entity.Task) (entity.Task, error) {
-	//TODO implement me
-	panic("implement me")
+
+	// validate ownership
+	taskCheck, err := r.IsOwner(task.ID)
+	if err != nil {
+		return entity.Task{}, err
+	}
+
+	if taskCheck.UserID != task.UserID {
+		return entity.Task{}, constant.ErrorOwnership
+	}
+
+	err = r.db.Updates(&task).First(&task).Error
+	if err != nil {
+		return entity.Task{}, err
+	}
+	return task, nil
 }
 
 func (r *repository) Delete(id uint) error {
