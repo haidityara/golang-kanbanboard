@@ -12,7 +12,7 @@ type RepositoryTask interface {
 	IsCategoryExist(categoryID uint) error
 	Gets() ([]entity.Task, error)
 	Update(task entity.Task) (entity.Task, error)
-	Delete(id uint) error
+	Delete(task entity.Task) error
 }
 
 type repository struct {
@@ -76,9 +76,21 @@ func (r *repository) Update(task entity.Task) (entity.Task, error) {
 	return task, nil
 }
 
-func (r *repository) Delete(id uint) error {
-	//TODO implement me
-	panic("implement me")
+func (r *repository) Delete(task entity.Task) error {
+	checkTask, err := r.IsOwner(task.ID)
+	if err != nil {
+		return err
+	}
+
+	if checkTask.UserID != task.UserID {
+		return constant.ErrorOwnership
+	}
+
+	err = r.db.First(&task).Where("id = ?", task.ID).Delete(&task).Error
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func New(db *gorm.DB) RepositoryTask {

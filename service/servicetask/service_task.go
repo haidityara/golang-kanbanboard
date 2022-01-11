@@ -14,10 +14,23 @@ type ServiceTask interface {
 	Update(request modeltask.RequestUpdate) (modeltask.ResponseStore, error)
 	UpdateStatus(request modeltask.RequestUpdateStatus) (modeltask.ResponseStore, error)
 	UpdateCategory(request modeltask.RequestUpdateCategory) (modeltask.ResponseStore, error)
+	Delete(id uint, userID uint) error
 }
 
 type Service struct {
 	repo repositorytask.RepositoryTask
+}
+
+func (s *Service) Delete(id uint, userID uint) error {
+	entityTask := entity.Task{
+		ID:     id,
+		UserID: userID,
+	}
+	err := s.repo.Delete(entityTask)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (s *Service) UpdateStatus(request modeltask.RequestUpdateStatus) (modeltask.ResponseStore, error) {

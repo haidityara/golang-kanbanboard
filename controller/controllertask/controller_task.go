@@ -15,10 +15,22 @@ type ControllerTask interface {
 	Update(ctx *gin.Context)
 	UpdateStatus(ctx *gin.Context)
 	UpdateCategory(ctx *gin.Context)
+	Delete(ctx *gin.Context)
 }
 
 type controller struct {
 	srv servicetask.ServiceTask
+}
+
+func (c *controller) Delete(ctx *gin.Context) {
+	taskID, _ := strconv.ParseUint(ctx.Param("taskID"), 10, 64)
+	UserID := ctx.MustGet("user_id").(uint)
+	err := c.srv.Delete(uint(taskID), UserID)
+	if err != nil {
+		ctx.JSON(helper.GetStatusCode(err), helper.NewResponse(helper.GetStatusCode(err), nil, err))
+		return
+	}
+	ctx.JSON(http.StatusOK, helper.NewResponse(http.StatusOK, "Task has been deleted", nil))
 }
 
 func (c *controller) UpdateStatus(ctx *gin.Context) {
