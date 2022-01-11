@@ -20,6 +20,10 @@ func GetStatusCode(err error) int {
 		return http.StatusBadRequest
 	}
 
+	if err.Error() == constant.ErrorInvalidRole.Error() {
+		return http.StatusBadRequest
+	}
+
 	if isValidationError(err) {
 		return http.StatusBadRequest
 	}
