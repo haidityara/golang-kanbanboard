@@ -34,11 +34,12 @@ func NewRouter(r *gin.Engine, db *gorm.DB) {
 	routeUser.DELETE("/delete-account", middleware.Authorization, ctrlUser.DeleteByID)
 
 	// route task
-	r.POST("task", middleware.Authorization, ctrlTask.Create)
-	r.GET("task", middleware.Authorization, ctrlTask.Gets)
-	r.PUT("task/:taskID", middleware.Authorization, ctrlTask.Update)
-	r.PATCH("task/update-status/:taskID", middleware.Authorization, ctrlTask.UpdateStatus)
-	r.PATCH("task/update-category/:taskID", middleware.Authorization, ctrlTask.UpdateCategory)
+	r.POST("tasks", middleware.Authorization, ctrlTask.Create)
+	r.GET("tasks", middleware.Authorization, ctrlTask.Gets)
+	r.PUT("tasks/:taskID", middleware.Authorization, ctrlTask.Update)
+	r.PATCH("tasks/update-status/:taskID", middleware.Authorization, ctrlTask.UpdateStatus)
+	r.PATCH("tasks/update-category/:taskID", middleware.Authorization, ctrlTask.UpdateCategory)
+	r.DELETE("tasks/:taskID", middleware.Authorization, ctrlTask.Delete)
 
 	// routing docs
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
