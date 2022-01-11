@@ -14,6 +14,7 @@ type Request struct {
 }
 
 type ResponseStore struct {
+	ID          uint       `json:"id"`
 	Title       string     `json:"title"`
 	Status      bool       `json:"status"`
 	Description string     `json:"description"`

@@ -1,6 +1,8 @@
 package repositorytask
 
 import (
+	"errors"
+	"github.com/arfan21/golang-kanbanboard/constant"
 	"github.com/arfan21/golang-kanbanboard/entity"
 	"gorm.io/gorm"
 )
@@ -18,18 +20,32 @@ type repository struct {
 }
 
 func (r *repository) Create(task entity.Task) (entity.Task, error) {
-	//TODO implement me
-	panic("implement me")
+	err := r.db.Create(&task).Error
+	if err != nil {
+		return entity.Task{}, err
+	}
+	return task, nil
 }
 
 func (r *repository) IsCategoryExist(categoryID uint) error {
-	//TODO implement me
-	panic("implement me")
+	category := new(entity.Category)
+	err := r.db.Where("id = ?", categoryID).First(&category).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return constant.ErrorCategoryDoesNotExists
+		}
+		return err
+	}
+	return nil
 }
 
 func (r *repository) Gets() ([]entity.Task, error) {
-	//TODO implement m e
-	panic("implement me")
+	var tasks []entity.Task
+	err := r.db.Preload("User").Preload("Category").Find(tasks).Error
+	if err != nil {
+		return []entity.Task{}, err
+	}
+	return tasks, nil
 }
 
 func (r *repository) Update(task entity.Task) (entity.Task, error) {
