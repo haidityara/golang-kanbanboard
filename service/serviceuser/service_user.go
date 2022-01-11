@@ -41,6 +41,7 @@ func (s *service) Create(data modeluser.Request) (modeluser.Response, error) {
 		return modeluser.Response{}, err
 	}
 	entityUser.Password = string(hashedPassword)
+	entityUser.Role = constant.MemberRole
 
 	createdUser, err := s.repo.Create(*entityUser)
 	if err != nil {
