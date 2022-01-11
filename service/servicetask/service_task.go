@@ -10,7 +10,7 @@ import (
 
 type ServiceTask interface {
 	Create(request modeltask.Request) (modeltask.ResponseStore, error)
-	Get() (modeltask.ResponseGet, error)
+	Gets() ([]modeltask.ResponseGet, error)
 }
 
 type Service struct {
@@ -40,9 +40,17 @@ func (s *Service) Create(request modeltask.Request) (modeltask.ResponseStore, er
 	return *resp, nil
 }
 
-func (s *Service) Get() (modeltask.ResponseGet, error) {
-	//TODO implement me
-	panic("implement me")
+func (s *Service) Gets() ([]modeltask.ResponseGet, error) {
+	tasks, err := s.repo.Gets()
+	if err != nil {
+		return nil, err
+	}
+
+	var resp []modeltask.ResponseGet
+
+	copier.Copy(&resp, &tasks)
+
+	return resp, nil
 }
 
 func New(repo repositorytask.RepositoryTask) ServiceTask {

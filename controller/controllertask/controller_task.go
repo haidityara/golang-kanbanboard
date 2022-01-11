@@ -10,10 +10,20 @@ import (
 
 type ControllerTask interface {
 	Create(ctx *gin.Context)
+	Gets(ctx *gin.Context)
 }
 
 type controller struct {
 	srv servicetask.ServiceTask
+}
+
+func (c *controller) Gets(ctx *gin.Context) {
+	response, err := c.srv.Gets()
+	if err != nil {
+		ctx.JSON(helper.GetStatusCode(err), helper.NewResponse(helper.GetStatusCode(err), nil, err))
+		return
+	}
+	ctx.JSON(http.StatusOK, helper.NewResponse(http.StatusOK, response, nil))
 }
 
 func (c *controller) Create(ctx *gin.Context) {

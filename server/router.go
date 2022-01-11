@@ -35,6 +35,7 @@ func NewRouter(r *gin.Engine, db *gorm.DB) {
 
 	// route task
 	r.POST("task", middleware.Authorization, ctrlTask.Create)
+	r.GET("task", middleware.Authorization, ctrlTask.Gets)
 
 	// routing docs
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
