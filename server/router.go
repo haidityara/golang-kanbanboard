@@ -36,7 +36,9 @@ func NewRouter(r *gin.Engine, db *gorm.DB) {
 	// route task
 	r.POST("task", middleware.Authorization, ctrlTask.Create)
 	r.GET("task", middleware.Authorization, ctrlTask.Gets)
-	r.PUT("task/:categoryID", middleware.Authorization, ctrlTask.Update)
+	r.PUT("task/:taskID", middleware.Authorization, ctrlTask.Update)
+	r.PATCH("task/update-status/:taskID", middleware.Authorization, ctrlTask.UpdateStatus)
+	r.PATCH("task/update-category/:taskID", middleware.Authorization, ctrlTask.UpdateCategory)
 
 	// routing docs
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))

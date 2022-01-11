@@ -13,7 +13,6 @@ func isCategoryExists(repo repositorytask.RepositoryTask) validation.RuleFunc {
 		if !ok {
 			return errors.New("invalid value")
 		}
-
 		return repo.IsCategoryExist(cid)
 	}
 }
@@ -30,5 +29,11 @@ func ValidateTaskUpdate(data modeltask.RequestUpdate) error {
 	return validation.Errors{
 		"title":       validation.Validate(data.Title, validation.Required),
 		"description": validation.Validate(data.Description, validation.Required),
+	}.Filter()
+}
+
+func ValidateTaskUpdateCategory(data modeltask.RequestUpdateCategory) error {
+	return validation.Errors{
+		"category_id": validation.Validate(data.CategoryID, validation.Required),
 	}.Filter()
 }

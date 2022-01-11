@@ -23,14 +23,14 @@ type RequestUpdate struct {
 
 type RequestUpdateStatus struct {
 	ID     uint64 `json:"id,omitempty"`
-	Status bool   `json:"status,omitempty"`
+	Status *bool  `json:"status"`
 	UserID uint   `json:"user_id,omitempty"`
 }
 
 type RequestUpdateCategory struct {
-	ID     uint64 `json:"id,omitempty"`
-	Status bool   `json:"status,omitempty"`
-	UserID uint   `json:"user_id,omitempty"`
+	ID         uint64 `json:"id,omitempty"`
+	CategoryID uint   `json:"category_id"`
+	UserID     uint   `json:"user_id,omitempty"`
 }
 
 type ResponseStore struct {

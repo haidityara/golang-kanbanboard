@@ -13,10 +13,52 @@ type ControllerTask interface {
 	Create(ctx *gin.Context)
 	Gets(ctx *gin.Context)
 	Update(ctx *gin.Context)
+	UpdateStatus(ctx *gin.Context)
+	UpdateCategory(ctx *gin.Context)
 }
 
 type controller struct {
 	srv servicetask.ServiceTask
+}
+
+func (c *controller) UpdateStatus(ctx *gin.Context) {
+	request := new(modeltask.RequestUpdateStatus)
+	err := ctx.ShouldBind(request)
+	if err != nil {
+		ctx.JSON(helper.GetStatusCode(err), helper.NewResponse(helper.GetStatusCode(err), nil, err))
+		return
+	}
+
+	request.ID, _ = strconv.ParseUint(ctx.Param("taskID"), 10, 64)
+	request.UserID = ctx.MustGet("user_id").(uint)
+	resp, err := c.srv.UpdateStatus(*request)
+	if err != nil {
+		ctx.JSON(helper.GetStatusCode(err), helper.NewResponse(helper.GetStatusCode(err), nil, err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, helper.NewResponse(http.StatusOK, resp, nil))
+	return
+}
+
+func (c *controller) UpdateCategory(ctx *gin.Context) {
+	request := new(modeltask.RequestUpdateCategory)
+	err := ctx.ShouldBind(request)
+	if err != nil {
+		ctx.JSON(helper.GetStatusCode(err), helper.NewResponse(helper.GetStatusCode(err), nil, err))
+		return
+	}
+
+	request.ID, _ = strconv.ParseUint(ctx.Param("taskID"), 10, 64)
+	request.UserID = ctx.MustGet("user_id").(uint)
+	resp, err := c.srv.UpdateCategory(*request)
+	if err != nil {
+		ctx.JSON(helper.GetStatusCode(err), helper.NewResponse(helper.GetStatusCode(err), nil, err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, helper.NewResponse(http.StatusOK, resp, nil))
+	return
 }
 
 func (c *controller) Update(ctx *gin.Context) {
@@ -27,7 +69,7 @@ func (c *controller) Update(ctx *gin.Context) {
 		return
 	}
 
-	request.ID, _ = strconv.ParseUint(ctx.Param("categoryID"), 10, 64)
+	request.ID, _ = strconv.ParseUint(ctx.Param("taskID"), 10, 64)
 	request.UserID = ctx.MustGet("user_id").(uint)
 	resp, err := c.srv.Update(*request)
 	if err != nil {
