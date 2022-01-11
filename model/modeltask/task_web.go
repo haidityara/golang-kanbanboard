@@ -6,6 +6,7 @@ import (
 )
 
 type Request struct {
+	ID          uint64 `json:"id,omitempty"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Status      bool   `json:"status,omitempty"`
@@ -13,8 +14,27 @@ type Request struct {
 	UserID      uint   `json:"user_id,omitempty"`
 }
 
+type RequestUpdate struct {
+	ID          uint64 `json:"id,omitempty"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	UserID      uint   `json:"user_id,omitempty"`
+}
+
+type RequestUpdateStatus struct {
+	ID     uint64 `json:"id,omitempty"`
+	Status bool   `json:"status,omitempty"`
+	UserID uint   `json:"user_id,omitempty"`
+}
+
+type RequestUpdateCategory struct {
+	ID     uint64 `json:"id,omitempty"`
+	Status bool   `json:"status,omitempty"`
+	UserID uint   `json:"user_id,omitempty"`
+}
+
 type ResponseStore struct {
-	ID          uint       `json:"id"`
+	ID          uint64     `json:"id"`
 	Title       string     `json:"title"`
 	Status      bool       `json:"status"`
 	Description string     `json:"description"`
