@@ -25,3 +25,10 @@ func ValidateTaskCreate(data modeltask.Request, repo repositorytask.RepositoryTa
 		"category_id": validation.Validate(data.CategoryID, validation.Required, validation.By(isCategoryExists(repo))),
 	}.Filter()
 }
+
+func ValidateTaskUpdate(data modeltask.RequestUpdate) error {
+	return validation.Errors{
+		"title":       validation.Validate(data.Title, validation.Required),
+		"description": validation.Validate(data.Description, validation.Required),
+	}.Filter()
+}
