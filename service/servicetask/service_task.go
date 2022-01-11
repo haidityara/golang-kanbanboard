@@ -11,10 +11,31 @@ import (
 type ServiceTask interface {
 	Create(request modeltask.Request) (modeltask.ResponseStore, error)
 	Gets() ([]modeltask.ResponseGet, error)
+	Update(request modeltask.RequestUpdate) (modeltask.ResponseStore, error)
 }
 
 type Service struct {
 	repo repositorytask.RepositoryTask
+}
+
+func (s *Service) Update(request modeltask.RequestUpdate) (modeltask.ResponseStore, error) {
+	// validator
+	err := validation.ValidateTaskUpdate(request)
+	if err != nil {
+		return modeltask.ResponseStore{}, err
+	}
+
+	entityTask := new(entity.Task)
+	copier.Copy(&entityTask, &request)
+
+	update, err := s.repo.Update(*entityTask)
+	if err != nil {
+		return modeltask.ResponseStore{}, err
+	}
+	resp := new(modeltask.ResponseStore)
+	copier.Copy(&resp, &update)
+
+	return *resp, nil
 }
 
 func (s *Service) Create(request modeltask.Request) (modeltask.ResponseStore, error) {
