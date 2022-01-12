@@ -36,6 +36,10 @@ func GetStatusCode(err error) int {
 		return http.StatusConflict
 	}
 
+	if err.Error() == constant.ErrorOwnership.Error() {
+		return http.StatusConflict
+	}
+
 	return http.StatusInternalServerError
 }
 
