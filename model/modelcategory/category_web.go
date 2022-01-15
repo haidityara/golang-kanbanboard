@@ -5,6 +5,7 @@ import (
 )
 
 type Request struct {
+	ID   uint64 `json:"id,omitempty"`
 	Type string `json:"type"`
 }
 

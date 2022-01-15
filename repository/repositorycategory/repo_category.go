@@ -37,13 +37,21 @@ func (r *Repository) Gets() ([]entity.Category, error) {
 }
 
 func (r *Repository) Update(category entity.Category) (entity.Category, error) {
-	//TODO implement me
-	panic("implement me")
+	err := r.db.Where("id = ?", category.ID).Updates(&category).Error
+	if err != nil {
+		return entity.Category{}, err
+	}
+	return category, nil
 }
 
 func (r *Repository) Delete(ID uint) error {
-	//TODO implement me
-	panic("implement me")
+	category := entity.Category{}
+	category.ID = ID
+	err := r.db.First(&category).Where("id = ?", category.ID).Delete(&category).Error
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func New(db *gorm.DB) RepositoryCategory {

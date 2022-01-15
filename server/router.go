@@ -51,6 +51,8 @@ func NewRouter(r *gin.Engine, db *gorm.DB) {
 	// route category
 	r.POST("categories", middleware.Authorization, ctrlCategory.Create)
 	r.GET("categories", middleware.Authorization, ctrlCategory.Gets)
+	r.PATCH("categories/:categoryID", middleware.Authorization, ctrlCategory.Update)
+	r.DELETE("categories/:categoryID", middleware.Authorization, ctrlCategory.Delete)
 
 	// routing docs
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
