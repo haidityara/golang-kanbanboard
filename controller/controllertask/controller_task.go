@@ -41,7 +41,12 @@ func (c *controller) UpdateStatus(ctx *gin.Context) {
 		return
 	}
 
-	request.ID, _ = strconv.ParseUint(ctx.Param("taskID"), 10, 64)
+	request.ID, err = strconv.ParseUint(ctx.Param("taskID"), 10, 64)
+	if err != nil {
+		ctx.JSON(helper.GetStatusCode(err), helper.NewResponse(helper.GetStatusCode(err), nil, err))
+		return
+	}
+
 	request.UserID = ctx.MustGet("user_id").(uint)
 	resp, err := c.srv.UpdateStatus(*request)
 	if err != nil {
