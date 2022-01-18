@@ -2,6 +2,7 @@ package repositorytask
 
 import (
 	"errors"
+
 	"github.com/arfan21/golang-kanbanboard/constant"
 	"github.com/arfan21/golang-kanbanboard/entity"
 	"gorm.io/gorm"
@@ -68,8 +69,12 @@ func (r *repository) Update(task entity.Task) (entity.Task, error) {
 	if taskCheck.UserID != task.UserID {
 		return entity.Task{}, constant.ErrorOwnership
 	}
+	if !task.Status {
+		err = r.db.Updates(&task).Updates(map[string]interface{}{"status": false}).First(&task).Error
+	} else {
+		err = r.db.Updates(&task).First(&task).Error
+	}
 
-	err = r.db.Updates(&task).First(&task).Error
 	if err != nil {
 		return entity.Task{}, err
 	}

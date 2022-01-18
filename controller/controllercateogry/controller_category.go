@@ -1,13 +1,14 @@
 package controllercateogry
 
 import (
+	"log"
+	"net/http"
+	"strconv"
+
 	"github.com/arfan21/golang-kanbanboard/helper"
 	"github.com/arfan21/golang-kanbanboard/model/modelcategory"
 	"github.com/arfan21/golang-kanbanboard/service/servicecategory"
 	"github.com/gin-gonic/gin"
-	"log"
-	"net/http"
-	"strconv"
 )
 
 type ControllerCategory interface {
@@ -36,8 +37,7 @@ func (c *Controller) Delete(ctx *gin.Context) {
 		ctx.JSON(helper.GetStatusCode(err), helper.NewResponse(helper.GetStatusCode(err), nil, err))
 		return
 	}
-	ctx.JSON(http.StatusOK, helper.NewResponse(http.StatusOK, "category deleted", nil))
-	return
+	ctx.JSON(http.StatusOK, helper.NewResponse(http.StatusOK, gin.H{"message": "Category has been successfully deleted"}, nil))
 }
 
 func (c *Controller) Update(ctx *gin.Context) {

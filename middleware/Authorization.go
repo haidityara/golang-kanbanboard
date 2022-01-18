@@ -2,9 +2,11 @@ package middleware
 
 import (
 	"errors"
+	"log"
 	"net/http"
 	"strings"
 
+	"github.com/arfan21/golang-kanbanboard/constant"
 	"github.com/arfan21/golang-kanbanboard/helper"
 	"github.com/gin-gonic/gin"
 )
@@ -19,7 +21,7 @@ func Authorization(c *gin.Context) {
 
 	bearerToken := strings.Replace(authorizationHeader, "Bearer ", "", -1)
 
-	id, err := helper.ParseJwt(bearerToken)
+	id, role, err := helper.ParseJwt(bearerToken)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, helper.NewResponse(http.StatusUnauthorized, nil, err))
 		c.AbortWithStatus(http.StatusUnauthorized)
@@ -27,5 +29,16 @@ func Authorization(c *gin.Context) {
 	}
 
 	c.Set("user_id", id)
+	c.Set("role", role)
 	c.Next()
+}
+
+func AuthorizationAdmin(c *gin.Context) {
+	role := c.MustGet("role").(string)
+	if role != constant.AdminRole {
+		c.JSON(http.StatusForbidden, helper.NewResponse(http.StatusForbidden, nil, errors.New("your role is not allowed")))
+		c.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+	log.Println(role)
 }

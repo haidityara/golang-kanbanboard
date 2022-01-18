@@ -42,6 +42,7 @@ func (s *Service) UpdateStatus(request modeltask.RequestUpdateStatus) (modeltask
 	}
 	resp := modeltask.ResponseStore{}
 	copier.Copy(&resp, &update)
+	resp.CreatedAt = nil
 	return resp, nil
 }
 
@@ -50,6 +51,11 @@ func (s *Service) UpdateCategory(request modeltask.RequestUpdateCategory) (model
 	if err != nil {
 		return modeltask.ResponseStore{}, err
 	}
+	err = s.repo.IsCategoryExist(request.CategoryID)
+	if err != nil {
+		return modeltask.ResponseStore{}, err
+	}
+
 	entityTask := entity.Task{}
 	copier.Copy(&entityTask, &request)
 	update, err := s.repo.Update(entityTask)
@@ -58,6 +64,7 @@ func (s *Service) UpdateCategory(request modeltask.RequestUpdateCategory) (model
 	}
 	resp := modeltask.ResponseStore{}
 	copier.Copy(&resp, &update)
+	resp.CreatedAt = nil
 	return resp, nil
 }
 
@@ -77,6 +84,7 @@ func (s *Service) Update(request modeltask.RequestUpdate) (modeltask.ResponseSto
 	}
 	resp := new(modeltask.ResponseStore)
 	copier.Copy(&resp, &update)
+	resp.CreatedAt = nil
 
 	return *resp, nil
 }
@@ -85,6 +93,11 @@ func (s *Service) Create(request modeltask.Request) (modeltask.ResponseStore, er
 
 	// validation
 	err := validation.ValidateTaskCreate(request, s.repo)
+	if err != nil {
+		return modeltask.ResponseStore{}, err
+	}
+
+	err = s.repo.IsCategoryExist(request.CategoryID)
 	if err != nil {
 		return modeltask.ResponseStore{}, err
 	}
@@ -101,6 +114,7 @@ func (s *Service) Create(request modeltask.Request) (modeltask.ResponseStore, er
 
 	resp := new(modeltask.ResponseStore)
 	copier.Copy(&resp, &create)
+	resp.UpdatedAt = nil
 	return *resp, nil
 }
 
@@ -113,7 +127,6 @@ func (s *Service) Gets() ([]modeltask.ResponseGet, error) {
 	var resp []modeltask.ResponseGet
 
 	copier.Copy(&resp, &tasks)
-
 	return resp, nil
 }
 

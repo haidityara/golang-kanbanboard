@@ -4,7 +4,6 @@ import (
 	"github.com/arfan21/golang-kanbanboard/controller/controllercateogry"
 	"github.com/arfan21/golang-kanbanboard/controller/controllertask"
 	"github.com/arfan21/golang-kanbanboard/controller/controlleruser"
-	_ "github.com/arfan21/golang-kanbanboard/docs"
 	"github.com/arfan21/golang-kanbanboard/middleware"
 	"github.com/arfan21/golang-kanbanboard/repository/repositorycategory"
 	"github.com/arfan21/golang-kanbanboard/repository/repositorytask"
@@ -13,8 +12,6 @@ import (
 	"github.com/arfan21/golang-kanbanboard/service/servicetask"
 	"github.com/arfan21/golang-kanbanboard/service/serviceuser"
 	"github.com/gin-gonic/gin"
-	swaggerfiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 	"gorm.io/gorm"
 )
 
@@ -49,11 +46,9 @@ func NewRouter(r *gin.Engine, db *gorm.DB) {
 	r.DELETE("tasks/:taskID", middleware.Authorization, ctrlTask.Delete)
 
 	// route category
-	r.POST("categories", middleware.Authorization, ctrlCategory.Create)
+	r.POST("categories", middleware.Authorization, middleware.AuthorizationAdmin, ctrlCategory.Create)
 	r.GET("categories", middleware.Authorization, ctrlCategory.Gets)
-	r.PATCH("categories/:categoryID", middleware.Authorization, ctrlCategory.Update)
-	r.DELETE("categories/:categoryID", middleware.Authorization, ctrlCategory.Delete)
+	r.PATCH("categories/:categoryID", middleware.Authorization, middleware.AuthorizationAdmin, ctrlCategory.Update)
+	r.DELETE("categories/:categoryID", middleware.Authorization, middleware.AuthorizationAdmin, ctrlCategory.Delete)
 
-	// routing docs
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 }

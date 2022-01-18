@@ -25,13 +25,3 @@ type RequestLogin struct {
 type ResponseLogin struct {
 	Token string `json:"token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJxd2Vxd2..."`
 }
-
-// ExampleRequestUpdate only for example swaggo docs
-type ExampleRequestUpdate struct {
-	Fullname string `json:"full_name" example:"jhondoe"`
-	Email    string `json:"email" example:"test@example.com"`
-}
-
-type ExampleResponseDelete struct {
-	Message string `json:"message" example:"your account has been successfully deleted"`
-}

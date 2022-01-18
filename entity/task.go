@@ -8,7 +8,7 @@ type Task struct {
 	ID          uint      `json:"id gorm:primaryKey"`
 	Title       string    `json:"title" gorm:"not null"`
 	Description string    `json:"description" gorm:"null"`
-	Status      bool      `json:"status" gorm:"not null"`
+	Status      bool      `json:"status" gorm:"type:boolean;not null"`
 	UserID      uint      `json:"user_id"`
 	User        *User     `gorm:"foreignKey:UserID"`
 	CategoryID  uint      `json:"categoryID"`

@@ -10,10 +10,10 @@ type Request struct {
 }
 
 type Response struct {
-	ID        uint      `json:"id"`
-	Type      string    `json:"type"`
-	CreatedAt time.Time `json:"created_at,omitempty"`
-	UpdatedAt time.Time `json:"updated_at,omitempty"`
+	ID        uint       `json:"id"`
+	Type      string     `json:"type"`
+	CreatedAt *time.Time `json:"created_at,omitempty"`
+	UpdatedAt *time.Time `json:"updated_at,omitempty"`
 }
 
 type ResponseGet struct {

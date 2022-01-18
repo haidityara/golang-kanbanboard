@@ -1,12 +1,13 @@
 package controllertask
 
 import (
+	"net/http"
+	"strconv"
+
 	"github.com/arfan21/golang-kanbanboard/helper"
 	"github.com/arfan21/golang-kanbanboard/model/modeltask"
 	"github.com/arfan21/golang-kanbanboard/service/servicetask"
 	"github.com/gin-gonic/gin"
-	"net/http"
-	"strconv"
 )
 
 type ControllerTask interface {
@@ -30,7 +31,7 @@ func (c *controller) Delete(ctx *gin.Context) {
 		ctx.JSON(helper.GetStatusCode(err), helper.NewResponse(helper.GetStatusCode(err), nil, err))
 		return
 	}
-	ctx.JSON(http.StatusOK, helper.NewResponse(http.StatusOK, "Task has been deleted", nil))
+	ctx.JSON(http.StatusOK, helper.NewResponse(http.StatusOK, gin.H{"message": "Task has been successfully deleted"}, nil))
 }
 
 func (c *controller) UpdateStatus(ctx *gin.Context) {

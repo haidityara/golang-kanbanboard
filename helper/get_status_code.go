@@ -24,6 +24,14 @@ func GetStatusCode(err error) int {
 		return http.StatusBadRequest
 	}
 
+	if err.Error() == constant.ErrorOwnership.Error() {
+		return http.StatusForbidden
+	}
+
+	if err.Error() == constant.ErrorCategoryDoesNotExists.Error() {
+		return http.StatusNotFound
+	}
+
 	if isValidationError(err) {
 		return http.StatusBadRequest
 	}
@@ -36,11 +44,11 @@ func GetStatusCode(err error) int {
 		return http.StatusBadRequest
 	}
 
-	if isPostgresErrorUniqueViolation(err) {
-		return http.StatusConflict
+	if errors.Is(err, gorm.ErrInvalidTransaction) {
+		return http.StatusBadRequest
 	}
 
-	if err.Error() == constant.ErrorOwnership.Error() {
+	if isPostgresErrorUniqueViolation(err) {
 		return http.StatusConflict
 	}
 

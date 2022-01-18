@@ -40,6 +40,7 @@ func (s *Service) Update(request modelcategory.Request) (modelcategory.Response,
 	}
 	resp := new(modelcategory.Response)
 	copier.Copy(resp, &update)
+	resp.CreatedAt = nil
 	return *resp, nil
 }
 
@@ -66,6 +67,7 @@ func (s *Service) Create(request modelcategory.Request) (modelcategory.Response,
 	}
 	resp := new(modelcategory.Response)
 	copier.Copy(resp, &create)
+	resp.UpdatedAt = nil
 	return *resp, nil
 }
 

@@ -72,7 +72,7 @@ func (s *service) Login(data modeluser.RequestLogin) (modeluser.ResponseLogin, e
 		return modeluser.ResponseLogin{}, constant.ErrorInvalidLogin
 	}
 
-	token, err := helper.NewJwt(dataUser.ID)
+	token, err := helper.NewJwt(dataUser.ID, dataUser.Role)
 	if err != nil {
 		return modeluser.ResponseLogin{}, err
 	}
@@ -100,6 +100,7 @@ func (s *service) Update(data modeluser.Request) (modeluser.Response, error) {
 	resp := modeluser.Response{}
 
 	copier.Copy(&resp, &updatedUser)
+	resp.CreatedAt = nil
 
 	return resp, nil
 }
