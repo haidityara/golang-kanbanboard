@@ -1,9 +1,10 @@
 package repositorycategory
 
 import (
+	"log"
+
 	"github.com/arfan21/golang-kanbanboard/entity"
 	"gorm.io/gorm"
-	"log"
 )
 
 type RepositoryCategory interface {
@@ -37,7 +38,7 @@ func (r *Repository) Gets() ([]entity.Category, error) {
 }
 
 func (r *Repository) Update(category entity.Category) (entity.Category, error) {
-	err := r.db.Where("id = ?", category.ID).Updates(&category).Error
+	err := r.db.Where("id = ?", category.ID).Updates(&category).First(&category).Error
 	if err != nil {
 		return entity.Category{}, err
 	}
